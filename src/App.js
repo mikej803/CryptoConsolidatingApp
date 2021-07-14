@@ -20,7 +20,7 @@ const App = () => {
   .then(data => setCoins(data))
   .catch((error) => {
     console.error('Error:', error);
-  })
+  }, [])
   
   
 });

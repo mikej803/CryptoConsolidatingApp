@@ -2,34 +2,41 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import CryptoForm from '../components/CryptoForm'
 import { addToken } from '../actions/cryptoActions';
+import { removeToken } from '../actions/cryptoActions';
 import { Link } from 'react-router-dom';
 import { Table } from 'react-bootstrap';
 import './CryptoForm.css'
-//import allCryptos from './CryptoForm';
 
-// const CryptoWallet = () => {
-
-//     const cryptoData = useSelector(allCryptos)
-//     const dispatch = useDispatch();
-
-//     useEffect(() => {
-      
-//         dispatch(addToken());
-
-//     }, [])
-
-//};
 class CryptoWallet extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            id: 0,
             cName: "",
             symbol: "",
             price: "",
             quantity: ""
         }
     }
+
+    handleDelete = (index) => {
+        this.clearData();
+        if (window.confirm("Are you sure?")){
+        // whatever we map to dispatch...   
+        this.props.removeToken(index);
+    }
+}
+
+    clearData = () => {  
+        this.setState({  
+            id: 0,
+            cName: "",
+            symbol: "",
+            price: "",
+            quantity: ""  
+        });  
+      }  
 
     render() {
         console.log(this.props.allCryptos)
@@ -47,6 +54,7 @@ class CryptoWallet extends Component {
             <Table bordered>
                 <thead>
                     <tr>
+                        <th>ID#</th>
                         <th>Crypto Name</th>
                         <th>Symbol</th>
                         <th>Price</th>
@@ -56,11 +64,13 @@ class CryptoWallet extends Component {
                 <tbody>
                     {
                         this.props.allCryptos.map((item, index) => {
-                            return <tr key={index}>
+                            return <tr key={index + 1}>
+                            <td>{index + 1}</td>
                             <td>{item.cName}</td>
                             <td>{item.symbol}</td>
-                            <td>{item.price}</td>
-                            <td>{item.quantity}</td>    
+                            <td>$ {item.price}</td>
+                            <td>{item.quantity}</td>
+                            <button onClick={() => this.handleDelete(index)}>Delete</button>    
                         </tr>
                         })
                     }
@@ -88,6 +98,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         addToken: (tokenData) => dispatch(addToken(tokenData)), 
+        removeToken: (tokenData) => dispatch(removeToken(tokenData)), 
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CryptoWallet);    

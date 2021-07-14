@@ -54,7 +54,8 @@ class CryptoForm extends Component {
         // e.preventDefault()
         console.log(this.state);
         this.props.addToken(this.state)
-
+        alert ("Transferred To Wallet")
+            // return ()
 
         // if(this.props.currentIndex == -1)
         //     this.props.insertTransaction(this.state)
